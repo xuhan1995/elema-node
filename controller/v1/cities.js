@@ -5,7 +5,7 @@ import pinyin from "pinyin"
 
 class CitiesHandler {
 	constructor() {
-		this.getCities = this.getCities.bind(this)
+		this.getCities = this.getCities
 	}
 
 	async getCities(req, res) {
