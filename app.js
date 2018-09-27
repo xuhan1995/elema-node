@@ -17,6 +17,7 @@ app.all('*', (req, res, next) => {
 	res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS")
   res.header("Access-Control-Allow-Credentials", true); //可以带cookies
 	res.header("X-Powered-By", '3.2.1')
+	res.header("Cache-Control", 'no-store')   //解决304，实际上这种资源应该只请求一次，这样这句就是多余的
 	if (req.method == 'OPTIONS') {
 	  	res.sendStatus(200);
 	} else {
