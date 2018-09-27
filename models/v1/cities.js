@@ -25,6 +25,23 @@ citySchema.statics.citiesGroup = function(){
   })
 }
 
+citySchema.statics.citiesHot = function(){
+  return new Promise( async(resolve, reject) => {
+    try{
+      const cities = await this.findOne()
+      const citiesHot = cities.data.hotCities
+      resolve(citiesHot)
+    }
+    catch(err){
+      reject({
+				name: 'ERROR_DATA',
+				message: '查找数据失败',
+      })
+      console.error(error)      
+    }
+  })
+}
+
 const Cities = mongoose.model('Cities', citySchema)
 
 Cities.findOne((err,data) => {

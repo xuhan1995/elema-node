@@ -17,7 +17,7 @@ class CitiesHandler {
 					console.log('coming soon...')
 					break
 				case 'hot':
-					console.log('coming soon...')
+					citiesInfo = await Cities.citiesHot()
 					break
 				case 'group':
 					citiesInfo = await Cities.citiesGroup()
