@@ -49,8 +49,8 @@ Cities.findOne((err,data) => {
    if (!data) {
      Cities.create({data: citiesData})
    }
- } catch (error) {
-   console.error(error)
+ } catch (err) {
+   console.error(err)
  } 
 })
 
