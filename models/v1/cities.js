@@ -41,6 +41,24 @@ citySchema.statics.citiesHot = function(){
   })
 }
 
+citySchema.statics.citiesGuess = function(cityName){
+  return new Promise( async(resolve, reject) => {
+    let firstWord = cityName.substr(0,1).toUpperCase()
+    try{
+      const {data} = await this.findOne()
+      const citiesGuess = Object.entries(data).find(ele => ele[0] === firstWord)[1].find(ele => ele.pinyin === cityName)
+      resolve(citiesGuess)
+    }
+    catch(err){
+      reject({
+				name: 'ERROR_DATA',
+				message: '查找数据失败',
+      })
+      console.error(error)      
+    }
+  })
+}
+
 const Cities = mongoose.model('Cities', citySchema)
 
 Cities.findOne((err,data) => {
