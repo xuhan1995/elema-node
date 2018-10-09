@@ -10,9 +10,8 @@ const citySchema = new mongoose.Schema({
 citySchema.statics.citiesGroup = function(){
   return new Promise( async(resolve, reject) => {
     try{
-      const cities = await this.findOne()
-      const citiesObj = cities.data
-      delete citiesObj.hotCities
+      const {data} = await this.findOne()
+      const {hotCities,...citiesObj} = data
       resolve(citiesObj)
     }
     catch(err){
@@ -28,8 +27,8 @@ citySchema.statics.citiesGroup = function(){
 citySchema.statics.citiesHot = function(){
   return new Promise( async(resolve, reject) => {
     try{
-      const cities = await this.findOne()
-      const citiesHot = cities.data.hotCities
+      const {data:{hotCities}} = await this.findOne()
+      const citiesHot = hotCities
       resolve(citiesHot)
     }
     catch(err){
