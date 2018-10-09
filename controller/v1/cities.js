@@ -2,10 +2,12 @@
 
 import Cities from '../../models/v1/cities'
 import pinyin from "pinyin"
+import AddressComponent from "../../prototype/addressComponent"
 
-class CitiesHandler {
+class CitiesHandler extends AddressComponent {
 	constructor() {
-		this.getCities = this.getCities
+		super()
+		this.getCities = this.getCities.bind(this)
 	}
 
 	async getCities(req, res) {
@@ -14,7 +16,8 @@ class CitiesHandler {
 		try {
 			switch (type) {
 				case 'guess':
-					console.log('coming soon...')
+					const cityName = await this.getCityName(req)
+					citiesInfo = await Cities.citiesGuess(cityName)
 					break
 				case 'hot':
 					citiesInfo = await Cities.citiesHot()
@@ -37,6 +40,25 @@ class CitiesHandler {
 			})
 			console.error(error)
 		}
+	}
+
+	async getCityName(req){
+		let cityInfo
+		try {
+			cityInfo = await this.getPosition(req)
+		} catch (error) {
+			res.send({
+				name: 'ERROR_DATA',
+				message: '获取数据失败',
+			});
+			console.error('获取IP位置信息失败', error);
+		}
+		const pinyinArr = pinyin(cityInfo.city, {
+			style: pinyin.STYLE_NORMAL,
+		})
+		let cityName = ''
+		pinyinArr.forEach(ele => cityName += ele[0])
+		return cityName
 	}
 }
 
