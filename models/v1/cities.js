@@ -61,14 +61,9 @@ citySchema.statics.citiesGuess = function(cityName){
 
 const Cities = mongoose.model('Cities', citySchema)
 
-Cities.findOne((err,data) => {
- try {
-   if (!data) {
-     Cities.create({data: citiesData})
-   }
- } catch (err) {
-   console.error(err)
- } 
-})
+// 添加所有城市document
+Cities.create({data: citiesData})
+// 返回所有城市，之后对对象查找
+Cities.findOne()
 
 export default Cities
