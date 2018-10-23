@@ -47,11 +47,8 @@ class CitiesHandler extends AddressComponent {
 		try {
 			cityInfo = await this.getPosition(req)
 		} catch (error) {
-			res.send({
-				name: 'ERROR_DATA',
-				message: '获取数据失败',
-			});
 			console.error('获取IP位置信息失败', error);
+			throw error
 		}
 		const pinyinArr = pinyin(cityInfo.city, {
 			style: pinyin.STYLE_NORMAL,
