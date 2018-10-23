@@ -1,7 +1,7 @@
 {
   "name": "elema-node",
   "version": "1.0.0",
-  "description": "",
+  "description": "node搭建饿了吗后端",
   "main": "index.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development node index.js"
