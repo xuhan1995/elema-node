@@ -57,4 +57,24 @@ export default class AddressComponent extends BaseComponent{
       }
     })
   }
+
+  async searchPlace(keyword, cityName, type = 'search'){
+    try {
+      const res = await this.fetch('http://apis.map.qq.com/ws/place/v1/search',{
+        key: this.tencentkey,
+				keyword: encodeURIComponent(keyword),
+				boundary: 'region(' + encodeURIComponent(cityName) + ',0)',
+				page_size: 20,
+      })
+      if (res.status == 0) {
+        return res
+      }
+      else{
+        throw new Error('搜索位置信息失败')
+      }
+    } catch (error) {
+      console.error(error)
+      throw error
+    }
+  }
 }
