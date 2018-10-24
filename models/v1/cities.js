@@ -83,9 +83,13 @@ citySchema.statics.getCitiesById = function(id){
 
 const Cities = mongoose.model('Cities', citySchema)
 
-// 添加所有城市document
-Cities.create({data: citiesData})
-// 返回所有城市，之后对对象查找
-Cities.findOne()
+Cities.findOne((err, data) => {
+  if (err) {
+    throw err
+  }
+  if (!data) {
+    Cities.create({data: citiesData})
+  }
+})
 
 export default Cities
