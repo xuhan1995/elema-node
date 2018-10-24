@@ -9,5 +9,6 @@ const router = express.Router()
 router.get('/cities', CitiesHandler.getCities)
 router.get('/cities/:id', CitiesHandler.getCitiesById)
 router.get('/poisition', SearchPlace.search)
+router.get('/poisition/:geohash', SearchPlace.getDetailLocation)
 
 export default router

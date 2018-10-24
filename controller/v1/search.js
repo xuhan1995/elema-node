@@ -6,11 +6,11 @@ class SearchPlace extends AddressComponent {
   constructor(){
     super()
     this.search = this.search.bind(this)
+    this.getDetailLocation = this.getDetailLocation.bind(this)
   }
 
   async search(req, res){
     const {city_id, keyword, type = search} = req.query
-    console.log(keyword)
     if (!keyword) {
       res.status(406).send({
 				name: 'MISSING_KEYWORD',
@@ -39,7 +39,28 @@ class SearchPlace extends AddressComponent {
       res.status(500).send({
 				name: 'GET_ADDRESS_ERROR',
 				message: '获取地址信息失败',
-			});
+      });
+      throw error
+    }
+  }
+
+  async getDetailLocation(req, res){
+    const geohash = req.params.geohash
+    if (geohash.search(',') == -1) {
+      res.status(406).send({
+        name: 'ERROR_GEOHASH',
+				message: '获取到的经纬度错误',
+      })
+    }
+    try {
+      const {result} = await this.getLocationByGeohash(geohash)
+      res.send(result)
+    } catch (error) {
+      res.status(500).send({
+        name: 'GET_DETAIL_LOCATION_ERROR',
+				message: '获取详细地址信息失败',
+      })
+      throw error
     }
   }
 }
