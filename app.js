@@ -32,9 +32,9 @@ app.use(session({
 	name: config.session.name,
 	secret: config.session.secret,
 	cookie: config.session.cookie,
-	resave: true,
+	resave: true,   // 是否每次都重新保存会话
 	saveUninitialized: false,
-	store: new MongoStore({
+	store: new MongoStore({  // session持久化保存到mongoDB
 		url: config.url
 	})
 }))
