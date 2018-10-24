@@ -24,18 +24,18 @@ export default class AddressComponent extends BaseComponent{
 	 			ip = '180.158.102.141';
       }
       try{
-        let result = await this.fetch('http://apis.map.qq.com/ws/location/v1/ip', {
+        let result = await this.fetch('https://apis.map.qq.com/ws/location/v1/ip', {
           ip,
           key: this.tencentkey,
         })
         if (result.status != 0) {
-          result = await this.fetch('http://apis.map.qq.com/ws/location/v1/ip', {
+          result = await this.fetch('https://apis.map.qq.com/ws/location/v1/ip', {
             ip,
             key: this.tencentkey2,
           })
         }
         if (result.status != 0) {
-          result = await this.fetch('http://apis.map.qq.com/ws/location/v1/ip', {
+          result = await this.fetch('https://apis.map.qq.com/ws/location/v1/ip', {
             ip,
             key: this.tencentkey3,
           })
@@ -60,7 +60,7 @@ export default class AddressComponent extends BaseComponent{
 
   async searchPlace(keyword, cityName, type = 'search'){
     try {
-      const res = await this.fetch('http://apis.map.qq.com/ws/place/v1/search',{
+      const res = await this.fetch('https://apis.map.qq.com/ws/place/v1/search',{
         key: this.tencentkey,
 				keyword: encodeURIComponent(keyword),
 				boundary: 'region(' + encodeURIComponent(cityName) + ',0)',
@@ -74,6 +74,24 @@ export default class AddressComponent extends BaseComponent{
       }
     } catch (error) {
       console.error(error)
+      throw error
+    }
+  }
+  
+  async getLocationByGeohash(geohash){
+    try {
+      const res = await this.fetch('https://apis.map.qq.com/ws/geocoder/v1/', {
+        key: this.tencentkey,
+        location: geohash
+      })
+      if (res.status == 0) {
+        return res
+      }
+      else{
+        throw new Error('搜索详细位置信息失败')
+      }
+    } catch (error) {
+      console.log(error)
       throw error
     }
   }
