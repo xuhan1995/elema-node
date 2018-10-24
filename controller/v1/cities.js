@@ -57,6 +57,27 @@ class CitiesHandler extends AddressComponent {
 		pinyinArr.forEach(ele => cityName += ele[0])
 		return cityName
 	}
+
+	async getCitiesById(req, res) {
+		const cityId = req.params.id
+		if (isNaN(cityId)) {
+			res.status(406).json({
+				name: 'ERROR_QUERY_TYPE',
+				message: '参数错误',
+			})
+			return
+		}
+		try {
+			const cityInfo = await Cities.getCitiesById(cityId)
+			res.send(cityInfo)
+		} catch (error) {
+			res.send({
+				name: 'ERROR_DATA',
+				message: '获取数据失败',
+			})
+			console.error(error)
+		}
+	}
 }
 
 export default new CitiesHandler

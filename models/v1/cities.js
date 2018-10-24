@@ -19,7 +19,7 @@ citySchema.statics.citiesGroup = function(){
 				name: 'ERROR_DATA',
 				message: '查找数据失败',
       })
-      console.error(error)      
+      console.error(error)
     }
   })
 }
@@ -55,6 +55,28 @@ citySchema.statics.citiesGuess = function(cityName){
 				message: '查找数据失败',
       })
       console.error(error)      
+    }
+  })
+}
+
+citySchema.statics.getCitiesById = function(id){
+  return new Promise(async(resolve, reject) => {
+    try {
+      const {data} = await this.findOne()
+      const {hotCities,...citiesObj} = data
+      Object.values(citiesObj).forEach(citiesArr => {
+        citiesArr.forEach(ele => {
+          if (ele.id == id) {
+            resolve(ele)
+          }
+        })
+      })
+    } catch (error) {
+      reject({
+				name: 'ERROR_DATA',
+				message: '查找数据失败',
+      })
+      console.error(error)  
     }
   })
 }
