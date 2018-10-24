@@ -26,7 +26,7 @@ class CitiesHandler extends AddressComponent {
 					citiesInfo = await Cities.citiesGroup()
 					break
 				default:
-					res.json({
+					res.status(406).json({
 						name: 'ERROR_QUERY_TYPE',
 						message: '参数错误',
 					})
@@ -34,7 +34,7 @@ class CitiesHandler extends AddressComponent {
 			}
 			res.send(citiesInfo)
 		} catch (error) {
-			res.send({
+			res.send(500, {
 				name: 'ERROR_DATA',
 				message: '获取数据失败',
 			})
@@ -71,7 +71,7 @@ class CitiesHandler extends AddressComponent {
 			const cityInfo = await Cities.getCitiesById(cityId)
 			res.send(cityInfo)
 		} catch (error) {
-			res.send({
+			res.send(500, {
 				name: 'ERROR_DATA',
 				message: '获取数据失败',
 			})
