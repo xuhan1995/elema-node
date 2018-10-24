@@ -38,7 +38,7 @@ class CitiesHandler extends AddressComponent {
 				name: 'ERROR_DATA',
 				message: '获取数据失败',
 			})
-			console.error(error)
+			throw error
 		}
 	}
 
@@ -76,6 +76,7 @@ class CitiesHandler extends AddressComponent {
 				message: '获取数据失败',
 			})
 			console.error(error)
+			throw error
 		}
 	}
 }
