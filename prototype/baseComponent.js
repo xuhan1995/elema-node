@@ -43,7 +43,7 @@ export default class BaseComponent {
         responseConent = await response.json()        
       }
     } catch (error) {
-      console.log('获取http数据失败', err);
+      console.log('获取http数据失败', error);
     }
     return responseConent
   }
