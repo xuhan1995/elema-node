@@ -36,11 +36,7 @@ class SearchPlace extends AddressComponent {
       const {data} = await this.searchPlace(keyword, name, type)
       res.send(data)
     } catch (error) {
-<<<<<<< HEAD
       res.status(404).send({
-=======
-      res.status(500).send({
->>>>>>> 189f356f354db2a6206373ced52954fdd6dfb64b
 				name: 'GET_ADDRESS_ERROR',
 				message: '获取地址信息失败',
       });
@@ -60,11 +56,7 @@ class SearchPlace extends AddressComponent {
       const {result} = await this.getLocationByGeohash(geohash)
       res.send(result)
     } catch (error) {
-<<<<<<< HEAD
       res.status(404).send({
-=======
-      res.status(500).send({
->>>>>>> 189f356f354db2a6206373ced52954fdd6dfb64b
         name: 'GET_DETAIL_LOCATION_ERROR',
 				message: '获取详细地址信息失败',
       })

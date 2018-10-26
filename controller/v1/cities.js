@@ -71,7 +71,7 @@ class CitiesHandler extends AddressComponent {
 			const cityInfo = await Cities.getCitiesById(cityId)
 			res.send(cityInfo)
 		} catch (error) {
-			res.send(500, {
+			res.send(404, {
 				name: 'ERROR_DATA',
 				message: '获取数据失败',
 			})
