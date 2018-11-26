@@ -1,10 +1,10 @@
 'use strict'
 
 import express from 'express'
-import getFoodCategories from '../controller/v2/foodCategories'
+import entry from '../controller/v2/foodCategories'
 
 const router = express.Router()
 
-router.get('/foodCategories', getFoodCategories)
+router.get('/foodCategories', entry.getFoodCategories)
 
 export default router
