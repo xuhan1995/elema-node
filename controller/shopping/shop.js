@@ -7,6 +7,7 @@ import shopModel from '../../models/shopping/shop'
 class Shop extends AddressComponent {
   constructor(){
     super()
+    this.getRestaurants = this.getRestaurants.bind(this)
   }
 
   async getRestaurants (req, res) {
