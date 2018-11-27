@@ -3,6 +3,7 @@
 import AddressComponent from '../../prototype/addressComponent'
 import categoryModel from '../../models/shopping/category'
 import deliveryModel from '../../models/shopping/delivery'
+import activityModel from '../../models/shopping/activity'
 
 class Category extends AddressComponent {
   constructor () {
@@ -48,6 +49,19 @@ class Category extends AddressComponent {
 				status: 0,
 				type: 'ERROR_DELIVERY',
 				message: '获取deliveries失败'
+			})
+    }
+  }
+
+  async getActivities (req, res) {
+    try {
+      const activities = await activityModel.find({}, '-_id')
+      res.send(activities)
+    } catch (error) {
+      res.status(500).send({
+				status: 0,
+				type: 'ERROR_ACTIVITY',
+				message: '获取activies失败'
 			})
     }
   }
