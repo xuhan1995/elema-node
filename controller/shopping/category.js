@@ -23,6 +23,21 @@ class Category extends AddressComponent {
 			throw new Error(error)
     }
   }
+  //获取所有餐馆
+  async getCategories (req, res) {
+    try {
+      const categories = await categoryModel.find({}, '-_id')
+      res.send(categories)
+    } catch (error) {
+      console.error(error)
+      res.send({
+				status: 0,
+				type: 'ERROR_CATEGORY',
+				message: '获取categories失败'
+			})
+    }
+  }
+  
 }
 
 export default new Category()
