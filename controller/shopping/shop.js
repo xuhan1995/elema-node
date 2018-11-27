@@ -8,8 +8,9 @@ class Shop extends AddressComponent {
   constructor(){
     super()
     this.getRestaurants = this.getRestaurants.bind(this)
+    this.getDistanceInfo = this.getDistanceInfo.bind(this)
   }
-
+  // 筛选餐馆
   async getRestaurants (req, res) {
     const {
 			latitude,
@@ -35,11 +36,12 @@ class Shop extends AddressComponent {
     } catch (error) {
       console.error(error)
       res.status(406).json({
-				name: 'ERROR_PARAMS',
+        status: 0,
+        name: 'ERROR_PARAMS',
 				message: 'error.message',
-			})
+      })
+      return
     }
-
     //获取餐馆分类
     const filter = {}
     if (restaurant_category_ids.length && Number(restaurant_category_ids[0])) {
@@ -102,37 +104,77 @@ class Shop extends AddressComponent {
       }
     }
 
-    const restaurants = await shopModel.find(filter, '-_id').sort(sortBy).limit(Number(limit)).skip(Number(offset))
-    const from = latitude + ',' + longitude
-    let to = ''
-    // 百度地图测距需要饭店的经纬度
-    restaurants.forEach((ele, index) => {
-      const splitStr = index === restaurants.length - 1 ? '' : '|'
-      to += ele.latitude + ',' + ele.longitude + splitStr
-    })
     try {
+      let restaurants = await shopModel.find(filter, '-_id').sort(sortBy).limit(Number(limit)).skip(Number(offset))    
       if (restaurants.length) {
+        restaurants = this.getDistanceInfo(restaurants)
+      }
+      res.send(restaurants)
+    } catch (error) {
+      console.error(error)
+      res.status(500).send({
+				type: 'ERROR_GET_SHOP_LIST',
+				message: '获取店铺列表数据失败'
+			})
+    }
+  }
+  //按关键字和经纬度搜索餐馆
+  async searchResaturant (req, res) {
+    const { geohash , keyword } = req.query
+    try {
+      if (!geohash || geohash.indexOf(',') === -1) {
+        throw new Error('经纬度错误')
+      }
+      if (!keyword.trim()) {
+        throw new Error('关键字错误')
+      }
+    } catch (error) {
+      console.error(error)
+      res.status(400).send({
+        status: 0,
+				type: 'ERROR_PARAMS',
+				message: err.message,
+      })
+      return
+    }
+
+    try {
+      let restaurants = await shopModel.find({name: eval('/' + keyword + '/gi')}, '-_id').limit(50)
+      if (restaurants.length) {
+        restaurants = this.getDistanceInfo(restaurants)
+      }
+      res.send(restaurants)
+    } catch (error) {
+      console.error(error)
+      res.status(500).send({
+        type: 'ERROR_SEARCH_SHOP',
+        message: '搜索店铺失败'
+			})
+    }
+
+  }
+
+  async getDistanceInfo (restaurants) {
+    try {
+        const from = latitude + ',' + longitude
+        let to = ''
+        // 百度地图测距需要饭店的经纬度
+        restaurants.forEach((ele, index) => {
+          const splitStr = index === restaurants.length - 1 ? '' : '|'
+          to += ele.latitude + ',' + ele.longitude + splitStr
+        })
         const distance_duration = await this.getDistance(from, to)
         restaurants.forEach((ele, index) => {
           Object.assign(ele, distance_duration[index])
         })
-      }
+        return restaurants
     } catch (error) {
       // 百度地图达到上限后会导致加车失败，需优化
       console.error('从addressComoponent获取测距数据失败', err);
       restaurants.forEach(ele => {
-				return Object.assign(ele, {distance: '10公里', order_lead_time: '40分钟'})
-			})
+        return Object.assign(ele, {distance: '10公里', order_lead_time: '40分钟'})
+      })
     }
-    try{
-			res.send(restaurants)
-		}catch(err){
-			res.status(500).send({
-				type: 'ERROR_GET_SHOP_LIST',
-				message: '获取店铺列表数据失败'
-			})
-		}
-    
   }
 }
 
