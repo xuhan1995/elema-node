@@ -2,6 +2,7 @@
 
 import mongoose from 'mongoose'
 import citiesData from '../../initData/cities'
+import cluster from 'cluster'
 
 const citySchema = new mongoose.Schema({
   data: {}
@@ -83,13 +84,15 @@ citySchema.statics.getCitiesById = function(id){
 
 const Cities = mongoose.model('Cities', citySchema)
 
-Cities.findOne((err, data) => {
-  if (err) {
-    throw err
-  }
-  if (!data) {
-    Cities.create({data: citiesData})
-  }
-})
+if (cluster.worker.id == 1) {
+  Cities.findOne((err, data) => {
+    if (err) {
+      throw err
+    }
+    if (!data) {
+      Cities.create({data: citiesData})
+    }
+  })
+}
 
 export default Cities
