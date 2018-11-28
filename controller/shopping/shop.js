@@ -133,7 +133,7 @@ class Shop extends AddressComponent {
       res.status(400).send({
         status: 0,
 				type: 'ERROR_PARAMS',
-				message: err.message,
+				message: '参数错误',
       })
       return
     }
@@ -152,6 +152,34 @@ class Shop extends AddressComponent {
 			})
     }
 
+  }
+  //通过shopid获取餐馆详情
+  async getRestaurantDetail (req, res) {
+    const shopid = req.params.shopid
+    try {
+      if (!shopid || isNaN(shopid)) {
+        throw new Error('错误的shopid')
+      }
+    } catch (error) {
+      console.error(error)
+      res.status(400).send({
+        status: 0,
+				type: 'ERROR_SHOPID',
+				message: '错误的shopid',
+      })
+      return
+    }
+
+    try {
+      const restaurantDetail = await shopModel.findOne({ id : shopid}, '-_id')
+      res.send(restaurantDetail)
+    } catch (error) {
+      console.log(error)
+      res.status(500).send({
+        type: 'ERROR_SEARCH_RESTAURANT_DETAIL',
+        message: '搜索店铺失败'
+      })
+    }
   }
 
   async getDistanceInfo (restaurants) {
