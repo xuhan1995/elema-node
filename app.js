@@ -10,14 +10,13 @@ import chalk from 'chalk'
 
 const app = express()
 
-//set res.header
+// set res.header
 app.all('*', (req, res, next) => {
-	res.header("Access-Control-Allow-Origin", "*")  //允许的域设置全部，解决跨域
-	res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With") //允许的header
-	res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS")
+  res.header("Access-Control-Allow-Origin", "*")  //允许的域设置全部，解决跨域
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With, Cache-Control") //允许的header
+  res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS")
   res.header("Access-Control-Allow-Credentials", true); //可以带cookies
 	res.header("X-Powered-By", '3.2.1')
-	res.header("Cache-Control", 'no-store')   //解决304，实际上这种资源应该只请求一次，这样这句就是多余的
 	if (req.method == 'OPTIONS') {
 	  	res.sendStatus(200);
 	} else {
@@ -46,6 +45,6 @@ app.use(history())
 app.use(express.static('./public'))
 app.listen(config.port,() =>{
 	console.log(
-		chalk.green(`成功监听端口：${config.port}`)
+		chalk.green(`成功监听端口：${config.port}，进程PID:${process.pid}`)
 	)
 })
