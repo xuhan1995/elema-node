@@ -24,7 +24,7 @@ export default class BaseComponent {
       })
     } catch (error) {
       console.error(error)
-      res.send({
+      res.status(500).send({
 				status: 0,
 				type: 'ERROR_UPLOAD_IMG',
 				message: '上传图片失败'

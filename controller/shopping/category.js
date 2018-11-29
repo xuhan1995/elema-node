@@ -10,6 +10,26 @@ class Category extends AddressComponent {
     super()
   }
 
+  async addCategory (category) {
+    const categoryNames = category.split('/')
+    try {
+      const allCategory = await categoryModel.findOne()  //第一个对象，总计
+      const subCategory = await categoryModel.findOne({ name : categoryNames[0] })
+      allCategory.count ++
+      subCategory.count ++
+      subCategory.sub_categories.forEach(item => {
+        if (item.name == categoryNames[1]) {
+          item.count ++
+        }
+      })
+      await allCategory.save()
+      await subCategory.save()
+      console.log('更新cetegroy成功');
+    } catch (error) {
+      console.error('更新cetegroy失败')
+    }
+  }
+  
   async findById (id) {
     try {
       const { name , sub_categories} = await categoryModel.findOne({'sub_categories.id': id}) // 数组sub_categories中各项目按id查找
