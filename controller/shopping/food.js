@@ -254,7 +254,7 @@ class Food extends BaseComponent {
 			}
 
 			try {
-				const restaurant = await MenuModel.find({ restaurant_id })
+				const restaurant = await MenuModel.find({ restaurant_id : fields.restaurant_id})
 				const hasExisted = restaurant.some(ele => ele.name === fields.name)
 				if (hasExisted) {
 					throw new Error('该食品种类已存在')
