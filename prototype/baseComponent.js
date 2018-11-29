@@ -88,11 +88,10 @@ export default class BaseComponent {
         console.error(error)
     }
     try {
-      const id = await idsModel.findOne( async (err, data) => {
-        data[type] ++
-        await data.save()
-    })
-      return ++ id[type]
+      const id = await idsModel.findOne()
+      id[type] ++
+      await id.save()
+      return id[type]
     } catch (error) {
       console.error('获取id失败', error);
     }
