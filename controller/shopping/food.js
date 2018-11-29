@@ -2,6 +2,7 @@
 
 import {Food as FoodModel, Menu as MenuModel} from '../../models/shopping/food'
 import BaseComponent from '../../prototype/baseComponent'
+import formidable from 'formidable'
 
 class Food extends BaseComponent {
   constructor () {
@@ -20,7 +21,78 @@ class Food extends BaseComponent {
 			type: 1,
 			foods: [],
 		}]
+		this.addCategory = this.addCategory.bind(this)
   }
+
+	async addCategory (req, res) {
+		const form = new formidable.IncomingForm()
+		form.parse(req, async (err, fields, file) => {
+			try {
+				if (!fields.name) {
+					throw new Error('必须填写食品类型名称')
+				}
+				if (!fields.restaurant_id) {
+					throw new Error('必须填写餐馆ID')					
+				}
+			} catch (error) {
+				res.status(400).send({
+					status: 0,
+					type: 'ERROR_PARAMS',
+					message: error.message
+				})
+				return
+			}
+
+			let category_id
+			try {
+				category_id = await this.getId('category_id')
+			} catch (error) {
+				console.error('获取category_id失败')
+				res.status(500).send({
+					type: 'ERROR_DATA',
+					message: '获取数据失败'
+				})
+				return
+			}
+
+			try {
+				const restaurant = await MenuModel.find({ restaurant_id })
+				const hasExisted = restaurant.some(ele => ele.name === fields.name)
+				if (hasExisted) {
+					throw new Error('该食品种类已存在')
+				}
+			} catch (error) {
+				res.send({
+					type: 'ERROR_DATA',
+					message: '该食品种类已存在'
+				})
+				return
+			}
+
+			const food = {
+				name: fields.name,
+				description: fields.description, 
+				restaurant_id: fields.restaurant_id, 
+				id: category_id,
+				foods: [],
+			}
+			const newFood = new MenuModel(food)
+			try {
+				await newFood.save()
+				res.send({
+					status: 1,
+					success: '添加食品种类成功',
+				})
+			} catch (error) {
+				console.log('添加食品种类失败');
+				res.send({
+					status: 0,
+					type: 'ERROR_ADD_FOOD_CATEGORY',
+					message: '添加食品种类失败'
+				})
+			}
+		})
+	}
 
   async initData (restaurant_id) {
     for (let i = 0; i < this.defaultData.length; i++) {
