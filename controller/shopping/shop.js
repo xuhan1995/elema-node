@@ -11,7 +11,6 @@ class Shop extends AddressComponent {
   constructor(){
     super()
     this.getRestaurants = this.getRestaurants.bind(this)
-    this.getDistanceInfo = this.getDistanceInfo.bind(this)
     this.addShop = this.addShop.bind(this)
   }
   // 筛选餐馆
@@ -111,7 +110,7 @@ class Shop extends AddressComponent {
     try {
       let restaurants = await shopModel.find(filter, '-_id').sort(sortBy).limit(Number(limit)).skip(Number(offset))    
       if (restaurants.length) {
-        restaurants = this.getDistanceInfo(restaurants)
+        restaurants = await this.getDistanceInfo(restaurants, latitude, longitude)
       }
       res.send(restaurants)
     } catch (error) {
@@ -145,7 +144,7 @@ class Shop extends AddressComponent {
     try {
       let restaurants = await shopModel.find({name: eval('/' + keyword + '/gi')}, '-_id').limit(50)
       if (restaurants.length) {
-        restaurants = this.getDistanceInfo(restaurants)
+        restaurants = await this.getDistanceInfo(restaurants, latitude, longitude)
       }
       res.send(restaurants)
     } catch (error) {
@@ -186,7 +185,7 @@ class Shop extends AddressComponent {
     }
   }
 
-  async getDistanceInfo (restaurants) {
+  async getDistanceInfo(restaurants, latitude, longitude) {
     try {
         const from = latitude + ',' + longitude
         let to = ''
@@ -202,7 +201,7 @@ class Shop extends AddressComponent {
         return restaurants
     } catch (error) {
       // 百度地图达到上限后会导致加车失败，需优化
-      console.error('从addressComoponent获取测距数据失败', err);
+      console.error('从addressComoponent获取测距数据失败', error);
       restaurants.forEach(ele => {
         return Object.assign(ele, {distance: '10公里', order_lead_time: '40分钟'})
       })
