@@ -33,6 +33,7 @@ class Check {
           type: 'ERROR_SEARCH_ADMIN',
           message: '查找管理员失败',
         })
+        return
       }
     }
     next()
