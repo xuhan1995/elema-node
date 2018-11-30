@@ -12,6 +12,7 @@ class Shop extends AddressComponent {
     super()
     this.getRestaurants = this.getRestaurants.bind(this)
     this.addShop = this.addShop.bind(this)
+    this.searchResaturant = this.searchResaturant.bind(this)
   }
   // 筛选餐馆
   async getRestaurants (req, res) {
@@ -144,6 +145,7 @@ class Shop extends AddressComponent {
     try {
       let restaurants = await shopModel.find({name: eval('/' + keyword + '/gi')}, '-_id').limit(50)
       if (restaurants.length) {
+        const [latitude, longitude] = geohash.split(',')
         restaurants = await this.getDistanceInfo(restaurants, latitude, longitude)
       }
       res.send(restaurants)
