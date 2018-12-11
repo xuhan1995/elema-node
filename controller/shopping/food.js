@@ -26,6 +26,38 @@ class Food extends BaseComponent {
 		this.addFood = this.addFood.bind(this)
   }
 
+	async getMenu (req, res) {
+		const restaurant_id = req.query.restaurant_id
+		try {
+			if (!restaurant_id || isNaN(restaurant_id)) {
+				throw '获取餐馆参数ID错误'
+			}
+		} catch (error) {
+			console.error(error)
+			res.status(400).send({
+				status: 0,
+				type: 'ERROR_PARAMS',
+				message: '餐馆ID参数错误',
+			})
+			return
+		}
+		const filter = {
+			restaurant_id,
+			$where: 'this.foods.length > 0'
+		}
+		try {
+			const menu = await MenuModel.find(filter, '-_id')
+			res.send(menu)
+		} catch (error) {
+			console.error('获取食品数据失败', error);
+			res.status(500).send({
+				status: 0,
+				type: 'GET_DATA_ERROR',
+				message: '获取食品数据失败'
+			})
+		}
+	}
+
 	async addFood (req, res) {
 		const form = new formidable.IncomingForm()
 		form.parse(req, async (err, fields, file) => {
