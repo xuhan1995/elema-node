@@ -30,7 +30,7 @@ class Food extends BaseComponent {
 		const restaurant_id = req.query.restaurant_id
 		try {
 			if (!restaurant_id || isNaN(restaurant_id)) {
-				throw '获取餐馆参数ID错误'
+				throw new Error('获取餐馆参数ID错误')
 			}
 		} catch (error) {
 			console.error(error)
