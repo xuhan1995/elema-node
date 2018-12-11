@@ -115,17 +115,17 @@ export default class AddressComponent extends BaseComponent{
 			}
 			if(res.status == 0){
 				const positionArr = [];
-				let timevalue;
+        let timevalue;
 				res.result.forEach(item => {
 					timevalue = parseInt(item.duration.value) + 1200;
-					let durationtime = Math.ceil(timevalue%3600/60) + '分钟';
+					let durationtime = Math.ceil( timevalue % 3600 / 60 ) + '分钟';
 					if(Math.floor(timevalue/3600)){
-						durationtime = Math.floor(timevalue/3600) + '小时' + durationtime;
+						durationtime = Math.floor( timevalue / 3600 ) + '小时' + durationtime;
 					}
 					positionArr.push({
 						distance: item.distance.text,
 						order_lead_time: durationtime,
-					})
+          })
 				})
 				if (type == 'tiemvalue') {
 					return timevalue

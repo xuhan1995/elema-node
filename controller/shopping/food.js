@@ -146,9 +146,9 @@ class Food extends BaseComponent {
 			}
 
 			try {
-				const foodEntity = await FoodModel.create(newFood)
+				const foodEntity = await FoodModel.create(newFood) //保存新文档
 				category.foods.push(foodEntity)
-				await category.save()
+				await category.save() //更新文档
 				res.send({
 					status: 1,
 					success: '添加食品成功',

@@ -186,7 +186,7 @@ class Shop extends AddressComponent {
       })
     }
   }
-
+  //获取配送时间
   async getDistanceInfo(restaurants, latitude, longitude) {
     try {
         const from = latitude + ',' + longitude
