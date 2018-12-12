@@ -4,12 +4,12 @@ import ratingModel from '../../models/ugc/rating'
 
 class Rating {
   constructor () {
-    this.type = ['ratings', 'scores', 'tags']
-    this.getRatings = this.getRatings.bind(this)
-    this.getScores = this.getScores.bind(this)
+
   }
 
   async getRatings (req, res) {
+    const typePos = req.path.lastIndexOf('/', req.path.length - 1)
+    const type = req.path.slice(typePos + 1)
     const restaurant_id = req.params.restaurant_id
     try {
       if (!restaurant_id || isNaN(restaurant_id)) {
@@ -26,51 +26,18 @@ class Rating {
     }
 
     try {
-      const ratings = await ratingModel.getData(restaurant_id, this.type[0])
+      const ratings = await ratingModel.getData(restaurant_id, type)
       if (typeof ratings === 'string') {
         throw new Error(ratings)
       } else {
         res.send(ratings)
       }
     } catch (error) {
-      console.error('获取评价列表失败', error);
+      console.error('获取评价列表失败', error)
 			res.status(500).send({
 				status: 0,
 				type: "ERROR_DATA",
 				message: '未找到当前餐馆的评价数据'
-			})
-    }
-  }
-
-  async getScores (req, res) {
-    const restaurant_id = req.params.restaurant_id
-    try {
-      if (!restaurant_id || isNaN(restaurant_id)) {
-				throw new Error('获取餐馆参数ID错误')        
-      }
-    } catch (error) {
-      console.error(error)
-			res.status(400).send({
-				status: 0,
-				type: 'ERROR_PARAMS',
-				message: '餐馆ID参数错误',
-			})
-			return
-    }
-
-    try {
-      const stores = await ratingModel.getData(restaurant_id, this.type[1])
-      if (typeof stores === 'string') {
-        throw new Error(stores)
-      } else {
-        res.send(stores)
-      }
-    } catch (error) {
-      console.error('获取评价分数失败', error);
-			res.status(500).send({
-				status: 0,
-				type: "ERROR_DATA",
-				message: '未找到当前餐馆的评价分数数据'
 			})
     }
   }
