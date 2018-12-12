@@ -6,6 +6,7 @@ import searchPlace from '../controller/v1/search'
 import BaseComponent from '../prototype/baseComponent'
 import remark from '../controller/v1/remark'
 import address from '../controller/v1/address'
+import captchas from '../controller/v1/captchas'
 
 const router = express.Router()
 const baseComponent = new BaseComponent()
@@ -17,5 +18,6 @@ router.get('/poisition/:geohash', searchPlace.getDetailLocation)
 router.post('/addimg', baseComponent.uploadImg)
 router.get('/carts/:cart_id/remarks', remark.getRemarks)
 router.get('/users/:user_id/addresses', address.getAddress)
+router.post('/captchas', captchas.getCaptchas)
 
 export default router
