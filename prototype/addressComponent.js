@@ -25,18 +25,18 @@ export default class AddressComponent extends BaseComponent{
       }
       try{
         let result = await this.fetch('https://apis.map.qq.com/ws/location/v1/ip', {
-          ip,
+          // ip,
           key: this.tencentkey,
         })
         if (result.status != 0) {
           result = await this.fetch('https://apis.map.qq.com/ws/location/v1/ip', {
-            ip,
+            // ip,
             key: this.tencentkey2,
           })
         }
         if (result.status != 0) {
           result = await this.fetch('https://apis.map.qq.com/ws/location/v1/ip', {
-            ip,
+            // ip,
             key: this.tencentkey3,
           })
         }
