@@ -34,7 +34,7 @@ class CitiesHandler extends AddressComponent {
 			}
 			res.send(citiesInfo)
 		} catch (error) {
-			res.send(500, {
+			res.status(500).send({
 				name: 'ERROR_DATA',
 				message: '获取数据失败',
 			})
@@ -71,7 +71,7 @@ class CitiesHandler extends AddressComponent {
 			const cityInfo = await Cities.getCitiesById(cityId)
 			res.send(cityInfo)
 		} catch (error) {
-			res.send(404, {
+			res.status(400).send({
 				name: 'ERROR_DATA',
 				message: '获取数据失败',
 			})

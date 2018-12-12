@@ -17,7 +17,7 @@ router.get('/poisition', searchPlace.search)
 router.get('/poisition/:geohash', searchPlace.getDetailLocation)
 router.post('/addimg', baseComponent.uploadImg)
 router.get('/carts/:cart_id/remarks', remark.getRemarks)
-router.get('/users/:user_id/addresses', address.getAddress)
+router.get('/users/:user_id/address', address.getAddress)
 router.post('/captchas', captchas.getCaptchas)
 
 export default router
