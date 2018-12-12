@@ -6,6 +6,7 @@ class Rating {
   constructor () {
     this.type = ['ratings', 'scores', 'tags']
     this.getRatings = this.getRatings.bind(this)
+    this.getScores = this.getScores.bind(this)
   }
 
   async getRatings (req, res) {
@@ -32,15 +33,47 @@ class Rating {
         res.send(ratings)
       }
     } catch (error) {
-      console.error('获取评论列表失败', error);
+      console.error('获取评价列表失败', error);
 			res.status(500).send({
 				status: 0,
 				type: "ERROR_DATA",
-				message: '未找到当前餐馆的评论数据'
+				message: '未找到当前餐馆的评价数据'
 			})
     }
   }
 
+  async getScores (req, res) {
+    const restaurant_id = req.params.restaurant_id
+    try {
+      if (!restaurant_id || isNaN(restaurant_id)) {
+				throw new Error('获取餐馆参数ID错误')        
+      }
+    } catch (error) {
+      console.error(error)
+			res.status(400).send({
+				status: 0,
+				type: 'ERROR_PARAMS',
+				message: '餐馆ID参数错误',
+			})
+			return
+    }
+
+    try {
+      const stores = await ratingModel.getData(restaurant_id, this.type[1])
+      if (typeof stores === 'string') {
+        throw new Error(stores)
+      } else {
+        res.send(stores)
+      }
+    } catch (error) {
+      console.error('获取评价分数失败', error);
+			res.status(500).send({
+				status: 0,
+				type: "ERROR_DATA",
+				message: '未找到当前餐馆的评价分数数据'
+			})
+    }
+  }
 
   async initData (restaurant_id) {
     try {
