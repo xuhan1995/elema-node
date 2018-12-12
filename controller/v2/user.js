@@ -173,6 +173,14 @@ class User extends AddressComponent {
     }
   }
 
+  signOut (req, res) {
+    delete req.session.user_id
+    res.send({
+      status: 1,
+			message: '退出成功'
+    })
+  }
+
 }
 
 export default new User
