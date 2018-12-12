@@ -9,5 +9,6 @@ const router = express.Router()
 router.get('/foodCategories', entry.getFoodCategories)
 router.post('/register', user.register)
 router.post('/login', user.login)
+router.post('/user', user.getUserInfo)
 
 export default router

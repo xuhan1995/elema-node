@@ -141,6 +141,38 @@ class User extends AddressComponent {
     })
 
   }
+
+  async getUserInfo (req, res) { //用session实现了状态持久化
+    const sid = req.session.user_id
+    const qid = req.query.user_id
+    const user_id = sid || qid
+    try {
+      if (!user_id || isNaN(user_id)) {
+        throw new Error('获取用户ID失败')
+      }
+    } catch (error) {
+      console.error(error)
+      res.status(400).send({
+				status: 0,
+				type: 'GET_USER_INFO_FAIELD',
+				message: '通过session获取用户信息失败',
+			})
+			return 
+    }
+
+    try {
+      const userInfo = await userInfoModel.findOne({ user_id }, '-_id')
+      res.send(userInfo)
+    } catch (error) {
+      console.error('获取用户信息失败')
+      res.status(500).send({
+        status: 0,
+				type: 'GET_USER_INFO_FAIELD',
+				message: '获取用户信息失败',
+      })
+    }
+  }
+
 }
 
 export default new User
