@@ -19,5 +19,6 @@ router.post('/addimg', baseComponent.uploadImg)
 router.get('/carts/:cart_id/remarks', remark.getRemarks)
 router.get('/users/:user_id/address', address.getAddress)
 router.post('/captchas', captchas.getCaptchas)
+router.post('/users/:user_id/address', address.addAddress)
 
 export default router
