@@ -12,6 +12,19 @@ class Address extends BaseComponent {
 
   async addAddress (req, res) {
     const user_id = req.session.user_id || req.params.user_id
+    try {
+      if (!user_id || isNaN(user_id)) {
+        throw new Error('user_id参数错误')
+      }
+    } catch (error) {
+      console.error('user_id参数错误', error)
+      res.status(400).send({
+				type: 'ERROR_USER_ID',
+				message: 'user_id参数错误',
+      })
+      return
+    }
+
     const form = new formidable.IncomingForm()
     form.parse(req, async (err, fields, files) => {
       const {address, address_detail, geohash, name, phone, phone_bk, poi_type = 0, sex, tag, tag_type} = fields
@@ -79,6 +92,18 @@ class Address extends BaseComponent {
 
   async getAddress (req, res) {
     const user_id = req.session.user_id || req.params.user_id
+    try {
+      if (!user_id || isNaN(user_id)) {
+        throw new Error('user_id参数错误')
+      }
+    } catch (error) {
+      console.error('user_id参数错误', error)
+      res.status(400).send({
+				type: 'ERROR_USER_ID',
+				message: 'user_id参数错误',
+      })
+      return
+    }
 
     try {
       const userAddress =  await addressModel.findOne({ user_id })
@@ -91,9 +116,42 @@ class Address extends BaseComponent {
 				message: '获取用户地址数据失败'
 			})
     }
+  }
 
+  async deleteAddress (req, res) {
+    const user_id = req.session.user_id || req.params.user_id
+    const address_id = req.params.address_id
+    try {
+      if (!user_id || isNaN(user_id) || !address_id || isNaN(address_id)) {
+        throw new Error('参数错误')
+      }
+    } catch (error) {
+      console.error(error)
+      res.status(400).send({
+          type: 'ERROR_PARAMS',
+          message: '参数错误',
+      })
+    }
+    
+    try {
+      const address = await addressModel.findOneAndRemove({ id: address_id })
+      if (address) {
+        res.send({
+          status: 1,
+          success: '删除地址成功',
+        })
+      } else {
+        throw new Error('删除失败')
+      }
+    } catch (error) {
+      console.error(error)
+      res.status(500).send({
+				type: 'ERROR_DELETE_ADDRESS',
+				message: '删除收获地址失败'
+			})
+    }
   }
 
 }
 
-export default new Address
+export default new Address()

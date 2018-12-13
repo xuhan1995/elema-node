@@ -20,5 +20,7 @@ router.get('/carts/:cart_id/remarks', remark.getRemarks)
 router.get('/users/:user_id/address', address.getAddress)
 router.post('/captchas', captchas.getCaptchas)
 router.post('/users/:user_id/address', address.addAddress)
+router.delete('/users/:user_id/address/:address_id', address.deleteAddress)
+
 
 export default router
