@@ -38,4 +38,4 @@ class Remark extends AddressComponent {
   }
 }
 
-export default new Remark
+export default new Remark()

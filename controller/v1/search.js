@@ -67,4 +67,4 @@ class SearchPlace extends AddressComponent {
   }
 }
 
-export default new SearchPlace
+export default new SearchPlace()

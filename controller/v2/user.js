@@ -259,4 +259,4 @@ class User extends AddressComponent {
 
 }
 
-export default new User
+export default new User()

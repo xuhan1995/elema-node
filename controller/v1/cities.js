@@ -81,4 +81,4 @@ class CitiesHandler extends AddressComponent {
 	}
 }
 
-export default new CitiesHandler
+export default new CitiesHandler()
