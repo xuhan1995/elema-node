@@ -11,6 +11,7 @@ class User extends AddressComponent {
     super()
     this.login = this.login.bind(this)
     this.register = this.register.bind(this)
+    this.changePassword = this.changePassword.bind(this)
   }
 
   async register (req, res) {
@@ -178,6 +179,81 @@ class User extends AddressComponent {
     res.send({
       status: 1,
 			message: '退出成功'
+    })
+  }
+
+  async changePassword (req, res) {
+    const cap = req.cookies.cap
+    try {
+      if (!cap) {
+        throw new Error('验证码失效')
+      }
+    } catch (error) {
+      console.error(error)
+			res.status(400).send({
+				status: 0,
+				type: 'ERROR_CAPTCHA',
+				message: '验证码失效',
+			})
+			return
+    }
+
+    const form = new formidable.IncomingForm()
+    form.parse(req, async (err, fields, file) => {
+      const { username, oldpassword, newpassword, captcha_code } = fields
+      try{
+				if (!username) {
+					throw new Error('用户名参数错误')
+				}else if(!oldpassword){
+					throw new Error('必须添加旧密码')
+				}else if(!newpassword){
+					throw new Error('必须填写新密码')
+				}else if(!captcha_code || captcha_code !== cap){
+					throw new Error('验证码参数错误');
+				}
+			}catch(err){
+				console.log('修改密码参数错误', err);
+				res.status(400).send({
+					status: 0,
+					type: 'ERROR_QUERY',
+					message: err.message,
+				})
+				return
+      }
+      
+      try {
+        const user = await userModel.findOne({ username })
+        const md5OldPassword = this.encryption(oldpassword)
+        if (!user) {
+          res.status(500).send({
+            status: 0,
+						type: 'USER_NOT_FOUND',
+						message: '未找到当前用户',
+          })
+          return
+        }
+        if (md5OldPassword !== user.password) {
+          res.status(500).send({
+            status: 0,
+						type: 'ERROR_PASSWORD',
+						message: '密码不正确',
+          })
+          return
+        }
+        user.password = this.encryption(newpassword)
+        await user.save()
+        res.send({
+          status: 1,
+          success: '密码修改成功',
+        })
+      } catch (error) {
+        console.log('修改密码失败', error)
+				res.status(500).send({
+					status: 0,
+					type: 'ERROR_CHANGE_PASSWORD',
+					message: '修改密码失败',
+				})
+      }
     })
   }
 

@@ -11,6 +11,6 @@ router.post('/register', user.register)
 router.post('/login', user.login)
 router.get('/user', user.getUserInfo)
 router.get('/signout', user.signOut)
-
+router.post('/changepassword', user.changePassword)
 
 export default router
