@@ -22,4 +22,4 @@ class Captchas {
   }
 }
 
-export default new Captchas
+export default new Captchas()
