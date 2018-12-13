@@ -7,6 +7,7 @@ import BaseComponent from '../prototype/baseComponent'
 import remark from '../controller/v1/remark'
 import address from '../controller/v1/address'
 import captchas from '../controller/v1/captchas'
+import cart from '../controller/v1/cart'
 
 const router = express.Router()
 const baseComponent = new BaseComponent()
@@ -21,6 +22,6 @@ router.get('/users/:user_id/address', address.getAddress)
 router.post('/captchas', captchas.getCaptchas)
 router.post('/users/:user_id/address', address.addAddress)
 router.delete('/users/:user_id/address/:address_id', address.deleteAddress)
-
+router.post('/carts/checkout', cart.checkout)
 
 export default router
