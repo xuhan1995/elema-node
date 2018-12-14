@@ -8,6 +8,7 @@ import remark from '../controller/v1/remark'
 import address from '../controller/v1/address'
 import captchas from '../controller/v1/captchas'
 import cart from '../controller/v1/cart'
+import order from '../controller/v1/order'
 
 const router = express.Router()
 const baseComponent = new BaseComponent()
@@ -23,5 +24,6 @@ router.post('/captchas', captchas.getCaptchas)
 router.post('/users/:user_id/address', address.addAddress)
 router.delete('/users/:user_id/address/:address_id', address.deleteAddress)
 router.post('/carts/checkout', cart.checkout)
+router.post('/users/:user_id/carts/:cart_id/orders', order.postOrder)
 
 export default router
