@@ -405,6 +405,55 @@ class Shop extends AddressComponent {
       })
   }
 
+  async updateShop (req, res) {
+    const form = new formidable.IncomingForm()
+    form.parse(req, async (err, fields, files) => {
+      if (err) {
+				console.error('获取商铺信息form出错', err);
+				res.status(400).send({
+					status: 0,
+					type: 'ERROR_FORM',
+					message: '表单信息错误',
+				})
+				return 
+      }
+      const {name, address, description = "", phone, category, id, latitude, longitude, image_path} = fields
+      try {
+        if (!name) {
+					throw new Error('餐馆名称错误')
+				}else if(!address){
+					throw new Error('餐馆地址错误')
+				}else if(!phone){
+					throw new Error('餐馆联系电话错误')
+				}else if(!category){
+					throw new Error('餐馆分类错误')
+				}else if(!id || !Number(id)){
+					throw new Error('餐馆ID错误')
+				}else if(!image_path){
+					throw new Error('餐馆图片地址错误')
+        }
+        let newData
+				if (latitude && longitude) {
+					newData = {name, address, description, phone, category, latitude, longitude, image_path}
+				}else{
+					newData = {name, address, description, phone, category, image_path}
+        }
+        await shopModel.findOneAndUpdate({ id }, { $set: newData })
+        res.send({
+					status: 1,
+					success: '修改商铺信息成功',
+				})
+      } catch (error) {
+        console.error(error);
+				res.status(500).send({
+					status: 0,
+					type: 'ERROR_UPDATE_RESTAURANT',
+					message: '更新商铺信息失败',
+				})
+      }
+    })
+  }
+
 }
 
 export default new Shop()

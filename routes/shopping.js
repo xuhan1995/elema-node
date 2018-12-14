@@ -17,5 +17,6 @@ router.get('/v1/restaurants/activity_attributes', category.getActivities)
 router.post('/addshop', check.checkAdmin, shop.addShop)
 router.post('/addcategory', check.checkAdmin, food.addCategory)
 router.post('/addfood', check.checkAdmin, food.addFood)
+router.post('/updateshop', check.checkAdmin, shop.updateShop)
 
 export default router
