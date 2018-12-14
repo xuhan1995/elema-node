@@ -115,7 +115,7 @@ class Cart extends AddressComponent {
       }
 
       try {
-        const newCart = await cartModel(checkoutInfo)
+        const newCart = await cartModel.create(checkoutInfo)
         res.send(newCart)
       } catch (error) {
         console.log('保存购物车数据失败');
