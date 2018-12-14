@@ -487,6 +487,23 @@ class Shop extends AddressComponent {
 			})
     }
   }
+  
+  async getRestaurantsCount (req, res) {
+    try {
+      const restaurantsNum = await shopModel.count()
+      res.send({
+        status: 1,
+				restaurantsNum
+      })
+    } catch (error) {
+      console.error(error)
+      res.status(500).send({
+        status: 0,
+				type: 'ERROR_TO_GET_COUNT', 
+				message: '获取餐馆数量失败'
+      })
+    }
+  }
 }
 
 export default new Shop()

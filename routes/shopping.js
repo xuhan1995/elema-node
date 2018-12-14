@@ -19,5 +19,6 @@ router.post('/addcategory', check.checkAdmin, food.addCategory)
 router.post('/addfood', check.checkAdmin, food.addFood)
 router.post('/updateshop', check.checkAdmin, shop.updateShop)
 router.delete('/restaurant/:restaurant_id', check.checkSuperAdmin, shop.removeResturant)
+router.get('/restaurants/count', shop.getRestaurantsCount)
 
 export default router
