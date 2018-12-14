@@ -18,5 +18,6 @@ router.post('/addshop', check.checkAdmin, shop.addShop)
 router.post('/addcategory', check.checkAdmin, food.addCategory)
 router.post('/addfood', check.checkAdmin, food.addFood)
 router.post('/updateshop', check.checkAdmin, shop.updateShop)
+router.delete('/restaurant/:restaurant_id', check.checkSuperAdmin, shop.removeResturant)
 
 export default router

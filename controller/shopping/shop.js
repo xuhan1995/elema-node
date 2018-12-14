@@ -454,6 +454,39 @@ class Shop extends AddressComponent {
     })
   }
 
+  async removeResturant (req, res) {
+    const restaurant_id = req.params.restaurant_id
+    try {
+      if (!restaurant_id || isNaN(restaurant_id)) {
+        throw new Error('餐馆ID参数错误')
+      }
+    } catch (error) {
+      console.error(error)
+      res.status(400).send({
+        status: 0,
+				type: 'ERROR_PARAMS',
+				message: 'restaurant_id参数错误'
+      })
+      return
+    }
+    try {
+      const restaurant = await shopModel.findOneAndRemove({ id: restaurant_id })
+      if (restaurant) {
+        res.send({
+          status: 1,
+          success: '删除餐馆成功'
+        })
+      } else {
+        throw new Error('未找到餐馆，删除失败')
+      }
+    } catch (error) {
+      console.error(error)
+      res.status(500).send({
+				type: 'ERROR_DELETE_RESTAURANT',
+				message: '未找到餐馆，删除失败'
+			})
+    }
+  }
 }
 
 export default new Shop()
