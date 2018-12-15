@@ -21,8 +21,7 @@ class User extends AddressComponent {
       try {
         if (!username) {
           throw new Error('用户名参数错误')
-        }
-        if (!password) {
+        } else if (!password) {
           throw new Error('密码参数错误')
         }
       } catch (error) {
@@ -91,11 +90,9 @@ class User extends AddressComponent {
       try {
         if (!username) {
           throw new Error('用户名参数错误')
-        }
-        if (!password) {
+        } else if (!password) {
           throw new Error('密码参数错误')
-        }
-        if (!captcha_code || cap !== captcha_code) {
+        } else if (!captcha_code || cap !== captcha_code) {
           throw new Error('验证码参数错误')
         }
       } catch (error) {

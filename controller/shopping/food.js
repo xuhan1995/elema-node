@@ -66,17 +66,13 @@ class Food extends BaseComponent {
 			try {
 				if (!fields.name) {
 					throw new Error('必须填写食品名称')
-				}
-				if (!fields.image_path) {
+				} else if (!fields.image_path) {
 					throw new Error('必须上传食品图片')
-				}
-				if (!fields.specs.length) {
+				} else if (!fields.specs.length) {
 					throw new Error('至少填写一种规格')
-				}
-				if (!fields.category_id) {
+				} else if (!fields.category_id) {
 					throw new Error('食品类型ID错误')
-				}
-				if (!fields.restaurant_id) {
+				} else if (!fields.restaurant_id) {
 					throw new Error('餐馆ID错误')
 				}
 			} catch (error) {
@@ -260,8 +256,7 @@ class Food extends BaseComponent {
 			try {
 				if (!fields.name) {
 					throw new Error('必须填写食品类型名称')
-				}
-				if (!fields.restaurant_id) {
+				} else if (!fields.restaurant_id) {
 					throw new Error('必须填写餐馆ID')					
 				}
 			} catch (error) {

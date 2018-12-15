@@ -33,8 +33,7 @@ class Shop extends AddressComponent {
     try {
       if (!latitude) {
         throw new Error('latitude参数错误')
-      }
-      if (!longitude) {
+      } else if (!longitude) {
         throw new Error('longitude参数错误')
       }
     } catch (error) {
@@ -128,8 +127,7 @@ class Shop extends AddressComponent {
     try {
       if (!geohash || geohash.indexOf(',') === -1) {
         throw new Error('经纬度错误')
-      }
-      if (!keyword.trim()) {
+      } else if (!keyword.trim()) {
         throw new Error('关键字错误')
       }
     } catch (error) {
@@ -227,26 +225,19 @@ class Shop extends AddressComponent {
         try {
           if (!fields.name) {
             throw new Error('必须填写商店名称');
-          }
-          if(!fields.address){
+          } else if(!fields.address){
             throw new Error('必须填写商店地址');
-          }
-          if(!fields.phone){
+          } else if(!fields.phone){
             throw new Error('必须填写联系电话');
-          }
-          if(!fields.latitude || !fields.longitude){
+          } else if(!fields.latitude || !fields.longitude){
             throw new Error('商店位置信息错误');
-          }
-          if(!fields.image_path){
+          } else if(!fields.image_path){
             throw new Error('必须上传商铺图片');
-          }
-          if(!fields.category){
+          } else if(!fields.category){
             throw new Error('必须上传食品种类');
-          }
-          if (!fields.float_delivery_fee) {
+          } else if (!fields.float_delivery_fee) {
             throw new Error('必须上传运费');
-          }
-          if (!fields.float_minimum_order_amount) {
+          } else if (!fields.float_minimum_order_amount) {
             throw new Error('必须上传起送价');
           }
         } catch (error) {
