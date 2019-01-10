@@ -124,7 +124,7 @@ class User extends AddressComponent {
 					})
 					return 
         } else {
-          req.session.user_id = user.user_id
+          req.session.user_id = user.user_id //设置session
           const userInfo = await userInfoModel.findOne({ user_id : user.user_id }, '-_id')
           res.send(userInfo)
         }
